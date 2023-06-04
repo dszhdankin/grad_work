@@ -1,0 +1,7 @@
+flask
+nltk
+transformers
+torch
+notebook
+datasets
+pandas

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: black;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  form {
+      float: left;
+      height: 90%;
+      width: 50%;
+  }
+
+  /* Add padding to containers */
+  .container {
+    padding: 16px;
+    background-color: white;
+  }
+
+  /* Full-width input fields */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+  }
+
+  input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+
+  /* Overwrite default styles of hr */
+  hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+  }
+
+  /* Set a style for the submit button */
+  .registerbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+
+  .registerbtn:hover {
+    opacity: 1;
+  }
+
+  /* Add a blue text color to links */
+  a {
+    color: dodgerblue;
+  }
+
+  /* Set a grey background color and center the text of the "sign in" section */
+  .lower {
+    background-color: #f1f1f1;
+    text-align: center;
+    height: 250px;
+  }
+
+  textarea {
+    margin-top: 10px;
+    margin-left: 50px;
+    width: 650px;
+    height: 350px;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+    border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+    border-image: none;
+    border-radius: 6px 6px 6px 6px;
+    border-style: none solid solid none;
+    border-width: medium 1px 1px medium;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+    color: #555555;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1em;
+    line-height: 1.4em;
+    padding: 5px 8px;
+    transition: background-color 0.2s ease 0s;
+  }
+
+    textarea:focus {
+        background: none repeat scroll 0 0 #FFFFFF;
+        outline-width: 0;
+    }
+</style>
+
+</head>
+
+
+<body>
+
+  <form>
+    <div class="container">
+      <h1>Translate to SQL</h1>
+      <p>Enter your question.</p>
+      <hr>
+
+      <p><textarea id="eng_area" rows="20" cols="45" name="text" onchange="foo()">
+
+      </textarea></p>
+
+    </div>
+
+    <div class="container lower">
+    </div>
+  </form>
+
+  <form>
+    <div class="container">
+      <h1>SQL query</h1>
+      <p>Generated SQL query.</p>
+      <hr>
+
+      <p><textarea id="sql_area" rows="20" cols="45" name="text"></textarea></p>
+
+    </div>
+
+    <div class="container lower">
+    </div>
+  </form>
+
+  <script type="text/javascript">
+
+    function foo() {
+      let engArea = document.getElementById("eng_area");
+      let sqlArea = document.getElementById("sql_area");
+  
+      // TODO Change address varriable to domain-independent
+      fetch("http://127.0.0.1:5000/get_translation", {
+        method: "POST",
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+        body: JSON.stringify({ dt: engArea.value})
+      })
+      .then((response) => response.json())
+      .then((json) => sqlArea.value = json["dt"]);
+  
+    }
+  
+  </script>
+
+</body>
+
+
+</html>

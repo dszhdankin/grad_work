@@ -1,9 +1,10 @@
 #!./venv/bin/python
 
+import sys
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 import nltk
-nltk.download('punkt')
+nltk.download('punkt', quiet=True)
 
 model_name = "t5-small-english-to-sql-raw-translation/checkpoint-18600"
 model_dir = f"models/{model_name}"
@@ -14,11 +15,10 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_dir)
 max_input_length = 512
 max_output_length = 128
 
-while True:
-    print("question >> ", end='')
-    text = input()
-    if text == "\\quit":
-        break
+if len(sys.argv) < 2:
+    print('')
+else:
+    text = sys.argv[1]
     inputs = ["translate English to SQL: " + text]
 
     inputs = tokenizer(inputs, max_length=max_input_length, truncation=True, return_tensors="pt")
@@ -27,6 +27,3 @@ while True:
     predicted_query = nltk.sent_tokenize(decoded_output.strip())[0]
 
     print(predicted_query)
-
-
-print("OK")
